@@ -367,6 +367,7 @@ function colorete_code_handler($attrs, $content) {
         return "<pre class=\"colorete\"><code $language>" . ltrim(str_replace('&lt;br /&gt;', '', htmlspecialchars($content)), '\n') . '</code></pre>';
     }
 }
+
 if (colorete_get_option('shortcode')) {
     add_shortcode('code', 'colorete_code_handler');
 }
@@ -520,171 +521,33 @@ function colorete_settings_page() {
              <?php colorete_get_package_list(colorete_get_option('package')); ?>
           </select>
           <div>
+
+              <?php $config = parse_ini_file( plugin_dir_path( __FILE__ ) . 'langs.ini', true ) ?>
+
               <h3>Support List:</h3> <a href="javascript:void();" id="colorete_support_list_btn"><?php echo __('[Show/Hide]', 'colorete'); ?></a>
               <div class="language_support_list" id="language_support_list">
                 <p><b>Common</b></p>
-                <ul id="language_support_list_common">
-                  <li><label><input name="apache.js" checked type="checkbox" value="0" class="colorete_lang common"> Apache</label>
-                  </li><li><label><input name="bash.js" checked type="checkbox" value="0" class="colorete_lang common"> Bash</label>
-                  </li><li><label><input name="cs.js" checked type="checkbox" value="0" class="colorete_lang common"> C#</label>
-                  </li><li><label><input name="cpp.js" checked type="checkbox" value="0" class="colorete_lang common"> C++</label>
-                  </li><li><label><input name="css.js" checked type="checkbox" value="0" class="colorete_lang common"> CSS</label>
-                  </li><li><label><input name="coffeescript.js" checked type="checkbox" value="0" class="colorete_lang common"> CoffeeScript</label>
-                  </li><li><label><input name="dts.js" checked type="checkbox" value="0" class="colorete_lang common"> Device Tree</label>
-                  </li><li><label><input name="diff.js" checked type="checkbox" value="0" class="colorete_lang common"> Diff</label>
-                  </li><li><label><input name="xml.js" checked type="checkbox" value="0" class="colorete_lang common"> HTML, XML</label>
-                  </li><li><label><input name="http.js" checked type="checkbox" value="0" class="colorete_lang common"> HTTP</label>
-                  </li><li><label><input name="ini.js" checked type="checkbox" value="0" class="colorete_lang common"> Ini</label>
-                  </li><li><label><input name="json.js" checked type="checkbox" value="0" class="colorete_lang common"> JSON</label>
-                  </li><li><label><input name="java.js" checked type="checkbox" value="0" class="colorete_lang common"> Java</label>
-                  </li><li><label><input name="javascript.js" checked type="checkbox" value="0" class="colorete_lang common"> JavaScript</label>
-                  </li><li><label><input name="makefile.js" checked type="checkbox" value="0" class="colorete_lang common"> Makefile</label>
-                  </li><li><label><input name="markdown.js" checked type="checkbox" value="0" class="colorete_lang common"> Markdown</label>
-                  </li><li><label><input name="nginx.js" checked type="checkbox" value="0" class="colorete_lang common"> Nginx</label>
-                  </li><li><label><input name="objectivec.js" checked type="checkbox" value="0" class="colorete_lang common"> Objective-C</label>
-                  </li><li><label><input name="php.js" checked type="checkbox" value="0" class="colorete_lang common"> PHP</label>
-                  </li><li><label><input name="perl.js" checked type="checkbox" value="0" class="colorete_lang common"> Perl</label>
-                  </li><li><label><input name="python.js" checked type="checkbox" value="0" class="colorete_lang common"> Python</label>
-                  </li><li><label><input name="ruby.js" checked type="checkbox" value="0" class="colorete_lang common"> Ruby</label>
-                  </li><li><label><input name="sql.js" checked type="checkbox" value="0" class="colorete_lang common"> SQL</label>
-                </li></ul>
+                <?php if (!empty($config['langs']['common'])): ?>
+                    <ul id="language_support_list_common">
+                        <?php foreach ($config['langs']['common'] as $lang => $langName): ?>
+                            <li><label><input name="<?php echo $lang ?>.js" checked type="checkbox" value="0" class="colorete_lang common"> <?php echo $langName ?></label>
+                        <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
                 <p><b>Other</b></p>
-                <ul id="language_support_list_other">
-                  <li><label><input name="1c.js" type="checkbox" value="1" class="colorete_lang"> 1C</label>
-                  </li><li><label><input name="armasm.js" type="checkbox" value="1" class="colorete_lang"> ARM Assembly</label>
-                  </li><li><label><input name="avrasm.js" type="checkbox" value="1" class="colorete_lang"> AVR Assembler</label>
-                  </li><li><label><input name="accesslog.js" type="checkbox" value="1" class="colorete_lang"> Access log</label>
-                  </li><li><label><input name="actionscript.js" type="checkbox" value="1" class="colorete_lang"> ActionScript</label>
-                  </li><li><label><input name="applescript.js" type="checkbox" value="1" class="colorete_lang"> AppleScript</label>
-                  </li><li><label><input name="arduino.js" type="checkbox" value="1" class="colorete_lang"> Arduino</label>
-                  </li><li><label><input name="asciidoc.js" type="checkbox" value="1" class="colorete_lang"> AsciiDoc</label>
-                  </li><li><label><input name="aspectj.js" type="checkbox" value="1" class="colorete_lang"> AspectJ</label>
-                  </li><li><label><input name="autohotkey.js" type="checkbox" value="1" class="colorete_lang"> AutoHotkey</label>
-                  </li><li><label><input name="autoit.js" type="checkbox" value="1" class="colorete_lang"> AutoIt</label>
-                  </li><li><label><input name="axapta.js" type="checkbox" value="1" class="colorete_lang"> Axapta</label>
-                  </li><li><label><input name="basic.js" type="checkbox" value="1" class="colorete_lang"> Basic</label>
-                  </li><li><label><input name="brainfuck.js" type="checkbox" value="1" class="colorete_lang"> Brainfuck</label>
-                  </li><li><label><input name="cal.js" type="checkbox" value="1" class="colorete_lang"> C/AL</label>
-                  </li><li><label><input name="cmake.js" type="checkbox" value="1" class="colorete_lang"> CMake</label>
-                  </li><li><label><input name="csp.js" type="checkbox" value="1" class="colorete_lang"> CSP</label>
-                  </li><li><label><input name="cos.js" type="checkbox" value="1" class="colorete_lang"> Caché Object Script</label>
-                  </li><li><label><input name="capnproto.js" type="checkbox" value="1" class="colorete_lang"> Cap’n Proto</label>
-                  </li><li><label><input name="ceylon.js" type="checkbox" value="1" class="colorete_lang"> Ceylon</label>
-                  </li><li><label><input name="clojure.js" type="checkbox" value="1" class="colorete_lang"> Clojure</label>
-                  </li><li><label><input name="clojure-repl.js" type="checkbox" value="1" class="colorete_lang"> Clojure REPL</label>
-                  </li><li><label><input name="crystal.js" type="checkbox" value="1" class="colorete_lang"> Crystal</label>
-                  </li><li><label><input name="d.js" type="checkbox" value="1" class="colorete_lang"> D</label>
-                  </li><li><label><input name="dns.js" type="checkbox" value="1" class="colorete_lang"> DNS Zone file</label>
-                  </li><li><label><input name="dos.js" type="checkbox" value="1" class="colorete_lang"> DOS .bat</label>
-                  </li><li><label><input name="dart.js" type="checkbox" value="1" class="colorete_lang"> Dart</label>
-                  </li><li><label><input name="delphi.js" type="checkbox" value="1" class="colorete_lang"> Delphi</label>
-                  </li><li><label><input name="django.js" type="checkbox" value="1" class="colorete_lang"> Django</label>
-                  </li><li><label><input name="dockerfile.js" type="checkbox" value="1" class="colorete_lang"> Dockerfile</label>
-                  </li><li><label><input name="dust.js" type="checkbox" value="1" class="colorete_lang"> Dust</label>
-                  </li><li><label><input name="erb.js" type="checkbox" value="1" class="colorete_lang"> ERB (Embedded Ruby)</label>
-                  </li><li><label><input name="elixir.js" type="checkbox" value="1" class="colorete_lang"> Elixir</label>
-                  </li><li><label><input name="elm.js" type="checkbox" value="1" class="colorete_lang"> Elm</label>
-                  </li><li><label><input name="erlang.js" type="checkbox" value="1" class="colorete_lang"> Erlang</label>
-                  </li><li><label><input name="erlang-repl.js" type="checkbox" value="1" class="colorete_lang"> Erlang REPL</label>
-                  </li><li><label><input name="fsharp.js" type="checkbox" value="1" class="colorete_lang"> F#</label>
-                  </li><li><label><input name="fix.js" type="checkbox" value="1" class="colorete_lang"> FIX</label>
-                  </li><li><label><input name="fortran.js" type="checkbox" value="1" class="colorete_lang"> Fortran</label>
-                  </li><li><label><input name="gcode.js" type="checkbox" value="1" class="colorete_lang"> G-code (ISO 6983)</label>
-                  </li><li><label><input name="gams.js" type="checkbox" value="1" class="colorete_lang"> GAMS</label>
-                  </li><li><label><input name="gauss.js" type="checkbox" value="1" class="colorete_lang"> GAUSS</label>
-                  </li><li><label><input name="glsl.js" type="checkbox" value="1" class="colorete_lang"> GLSL</label>
-                  </li><li><label><input name="gherkin.js" type="checkbox" value="1" class="colorete_lang"> Gherkin</label>
-                  </li><li><label><input name="go.js" type="checkbox" value="1" class="colorete_lang"> Go</label>
-                  </li><li><label><input name="golo.js" type="checkbox" value="1" class="colorete_lang"> Golo</label>
-                  </li><li><label><input name="gradle.js" type="checkbox" value="1" class="colorete_lang"> Gradle</label>
-                  </li><li><label><input name="groovy.js" type="checkbox" value="1" class="colorete_lang"> Groovy</label>
-                  </li><li><label><input name="hsp.js" type="checkbox" value="1" class="colorete_lang"> HSP</label>
-                  </li><li><label><input name="htmlbars.js" type="checkbox" value="1" class="colorete_lang"> HTMLBars</label>
-                  </li><li><label><input name="haml.js" type="checkbox" value="1" class="colorete_lang"> Haml</label>
-                  </li><li><label><input name="handlebars.js" type="checkbox" value="1" class="colorete_lang"> Handlebars</label>
-                  </li><li><label><input name="haskell.js" type="checkbox" value="1" class="colorete_lang"> Haskell</label>
-                  </li><li><label><input name="haxe.js" type="checkbox" value="1" class="colorete_lang"> Haxe</label>
-                  </li><li><label><input name="irpf90.js" type="checkbox" value="1" class="colorete_lang"> IRPF90</label>
-                  </li><li><label><input name="inform7.js" type="checkbox" value="1" class="colorete_lang"> Inform 7</label>
-                  </li><li><label><input name="x86asm.js" type="checkbox" value="1" class="colorete_lang"> Intel x86 Assembly</label>
-                  </li><li><label><input name="julia.js" type="checkbox" value="1" class="colorete_lang"> Julia</label>
-                  </li><li><label><input name="kotlin.js" type="checkbox" value="1" class="colorete_lang"> Kotlin</label>
-                  </li><li><label><input name="lasso.js" type="checkbox" value="1" class="colorete_lang"> Lasso</label>
-                  </li><li><label><input name="less.js" type="checkbox" value="1" class="colorete_lang"> Less</label>
-                  </li><li><label><input name="lisp.js" type="checkbox" value="1" class="colorete_lang"> Lisp</label>
-                  </li><li><label><input name="livecodeserver.js" type="checkbox" value="1" class="colorete_lang"> LiveCode</label>
-                  </li><li><label><input name="livescript.js" type="checkbox" value="1" class="colorete_lang"> LiveScript</label>
-                  </li><li><label><input name="lua.js" type="checkbox" value="1" class="colorete_lang"> Lua</label>
-                  </li><li><label><input name="mel.js" type="checkbox" value="1" class="colorete_lang"> MEL</label>
-                  </li><li><label><input name="mipsasm.js" type="checkbox" value="1" class="colorete_lang"> MIPS Assembly</label>
-                  </li><li><label><input name="mathematica.js" type="checkbox" value="1" class="colorete_lang"> Mathematica</label>
-                  </li><li><label><input name="matlab.js" type="checkbox" value="1" class="colorete_lang"> Matlab</label>
-                  </li><li><label><input name="maxima.js" type="checkbox" value="1" class="colorete_lang"> Maxima</label>
-                  </li><li><label><input name="mercury.js" type="checkbox" value="1" class="colorete_lang"> Mercury</label>
-                  </li><li><label><input name="mizar.js" type="checkbox" value="1" class="colorete_lang"> Mizar</label>
-                  </li><li><label><input name="mojolicious.js" type="checkbox" value="1" class="colorete_lang"> Mojolicious</label>
-                  </li><li><label><input name="monkey.js" type="checkbox" value="1" class="colorete_lang"> Monkey</label>
-                  </li><li><label><input name="moonscript.js" type="checkbox" value="1" class="colorete_lang"> MoonScript</label>
-                  </li><li><label><input name="nsis.js" type="checkbox" value="1" class="colorete_lang"> NSIS</label>
-                  </li><li><label><input name="nimrod.js" type="checkbox" value="1" class="colorete_lang"> Nimrod</label>
-                  </li><li><label><input name="nix.js" type="checkbox" value="1" class="colorete_lang"> Nix</label>
-                  </li><li><label><input name="ocaml.js" type="checkbox" value="1" class="colorete_lang"> OCaml</label>
-                  </li><li><label><input name="openscad.js" type="checkbox" value="1" class="colorete_lang"> OpenSCAD</label>
-                  </li><li><label><input name="ruleslanguage.js" type="checkbox" value="1" class="colorete_lang"> Oracle Rules Language</label>
-                  </li><li><label><input name="oxygene.js" type="checkbox" value="1" class="colorete_lang"> Oxygene</label>
-                  </li><li><label><input name="parser3.js" type="checkbox" value="1" class="colorete_lang"> Parser3</label>
-                  </li><li><label><input name="powershell.js" type="checkbox" value="1" class="colorete_lang"> PowerShell</label>
-                  </li><li><label><input name="processing.js" type="checkbox" value="1" class="colorete_lang"> Processing</label>
-                  </li><li><label><input name="prolog.js" type="checkbox" value="1" class="colorete_lang"> Prolog</label>
-                  </li><li><label><input name="protobuf.js" type="checkbox" value="1" class="colorete_lang"> Protocol Buffers</label>
-                  </li><li><label><input name="puppet.js" type="checkbox" value="1" class="colorete_lang"> Puppet</label>
-                  </li><li><label><input name="profile.js" type="checkbox" value="1" class="colorete_lang"> Python profile</label>
-                  </li><li><label><input name="q.js" type="checkbox" value="1" class="colorete_lang"> Q</label>
-                  </li><li><label><input name="qml.js" type="checkbox" value="1" class="colorete_lang"> QML</label>
-                  </li><li><label><input name="r.js" type="checkbox" value="1" class="colorete_lang"> R</label>
-                  </li><li><label><input name="rib.js" type="checkbox" value="1" class="colorete_lang"> RenderMan RIB</label>
-                  </li><li><label><input name="rsl.js" type="checkbox" value="1" class="colorete_lang"> RenderMan RSL</label>
-                  </li><li><label><input name="roboconf.js" type="checkbox" value="1" class="colorete_lang"> Roboconf</label>
-                  </li><li><label><input name="rust.js" type="checkbox" value="1" class="colorete_lang"> Rust</label>
-                  </li><li><label><input name="scss.js" type="checkbox" value="1" class="colorete_lang"> SCSS</label>
-                  </li><li><label><input name="sml.js" type="checkbox" value="1" class="colorete_lang"> SML</label>
-                  </li><li><label><input name="sqf.js" type="checkbox" value="1" class="colorete_lang"> SQF</label>
-                  </li><li><label><input name="step21.js" type="checkbox" value="1" class="colorete_lang"> STEP Part 21</label>
-                  </li><li><label><input name="scala.js" type="checkbox" value="1" class="colorete_lang"> Scala</label>
-                  </li><li><label><input name="scheme.js" type="checkbox" value="1" class="colorete_lang"> Scheme</label>
-                  </li><li><label><input name="scilab.js" type="checkbox" value="1" class="colorete_lang"> Scilab</label>
-                  </li><li><label><input name="smali.js" type="checkbox" value="1" class="colorete_lang"> Smali</label>
-                  </li><li><label><input name="smalltalk.js" type="checkbox" value="1" class="colorete_lang"> Smalltalk</label>
-                  </li><li><label><input name="stan.js" type="checkbox" value="1" class="colorete_lang"> Stan</label>
-                  </li><li><label><input name="stata.js" type="checkbox" value="1" class="colorete_lang"> Stata</label>
-                  </li><li><label><input name="stylus.js" type="checkbox" value="1" class="colorete_lang"> Stylus</label>
-                  </li><li><label><input name="swift.js" type="checkbox" value="1" class="colorete_lang"> Swift</label>
-                  </li><li><label><input name="tp.js" type="checkbox" value="1" class="colorete_lang"> TP</label>
-                  </li><li><label><input name="taggerscript.js" type="checkbox" value="1" class="colorete_lang"> Tagger Script</label>
-                  </li><li><label><input name="tcl.js" type="checkbox" value="1" class="colorete_lang"> Tcl</label>
-                  </li><li><label><input name="tex.js" type="checkbox" value="1" class="colorete_lang"> TeX</label>
-                  </li><li><label><input name="thrift.js" type="checkbox" value="1" class="colorete_lang"> Thrift</label>
-                  </li><li><label><input name="twig.js" type="checkbox" value="1" class="colorete_lang"> Twig</label>
-                  </li><li><label><input name="typescript.js" type="checkbox" value="1" class="colorete_lang"> TypeScript</label>
-                  </li><li><label><input name="vbnet.js" type="checkbox" value="1" class="colorete_lang"> VB.NET</label>
-                  </li><li><label><input name="vbscript.js" type="checkbox" value="1" class="colorete_lang"> VBScript</label>
-                  </li><li><label><input name="vbscript-html.js" type="checkbox" value="1" class="colorete_lang"> VBScript in HTML</label>
-                  </li><li><label><input name="vhdl.js" type="checkbox" value="1" class="colorete_lang"> VHDL</label>
-                  </li><li><label><input name="vala.js" type="checkbox" value="1" class="colorete_lang"> Vala</label>
-                  </li><li><label><input name="verilog.js" type="checkbox" value="1" class="colorete_lang"> Verilog</label>
-                  </li><li><label><input name="vim.js" type="checkbox" value="1" class="colorete_lang"> Vim Script</label>
-                  </li><li><label><input name="xl.js" type="checkbox" value="1" class="colorete_lang"> XL</label>
-                  </li><li><label><input name="xquery.js" type="checkbox" value="1" class="colorete_lang"> XQuery</label>
-                  </li><li><label><input name="yaml.js" type="checkbox" value="1" class="colorete_lang"> YAML</label>
-                  </li><li><label><input name="zephir.js" type="checkbox" value="1" class="colorete_lang"> Zephir</label>
-                  </li><li><label><input name="crmsh.js" type="checkbox" value="1" class="colorete_lang"> crmsh</label>
-                  </li><li><label><input name="pf.js" type="checkbox" value="1" class="colorete_lang"> pf</label>
-                </li></ul>
+                <?php if (!empty($config['langs']['extended'])): ?>
+                    <ul id="language_support_list_other">
+                        <?php foreach ($config['langs']['extended'] as $lang => $langName): ?>
+                            <li><label><input name="<?php echo $lang ?>.js" type="checkbox" value="1" class="colorete_lang"> <?php echo $langName ?></label>
+                        <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
                 <div style="clear: both;"></div>
               </div>
             </div>
         </div>
         <script type="text/javascript">
+        console.log(hljs.listLanguages());
         (function($, window){
             $(document).ready(function(){
                 $("#language_support_list ul").css({
