@@ -20,7 +20,7 @@ define('PLUGIN_URL', plugins_url() . '/' . dirname(plugin_basename(__FILE__)));
  * Get version of this plugins
  */
 function colorete_get_version() {
-    return '0.5.11';
+    return '0.1.0';
 }
 
 /**
@@ -62,47 +62,169 @@ function colorete_cdn_list() {
             'css' => '.min',
             'js' => '.min',
             'readme' => 'http://osscdn.com/#/highlight.js'
-        ),
-        'BootCSS' => array(
-            // 'cdn' => '//cdn.bootcss.com/highlight.js/' . colorete_get_lib_version(),
-            'cdn' => '//cdn.bootcss.com/highlight.js/9.2.0',
-            'desc' => __('Public CDN', 'colorete') . ': BootCSS' . __('lastest version', 'colorete') . ': 9.2.0',
-            'css' => '.min',
-            'js' => '.min',
-            'readme' => 'http://www.bootcdn.cn/highlight.js/'
-        ),
-        'Baidu' => array(
-            //'cdn' => 'http://apps.bdimg.com/libs/highlight.js/' . colorete_get_lib_version(),
-            //'cdn' => '//openapi.baidu.com/libs/highlight.js/' . colorete_get_lib_version(),
-            'cdn' => '//openapi.baidu.com/libs/highlight.js/9.1.0',
-            'desc' => __('Public CDN', 'colorete') . ': ' . __('Baidu', 'colorete') . __('lastest version', 'colorete') . ': 9.1.0)',
-            'css' => '.min',
-            'js' => '.min',
-            'readme' => 'http://cdn.code.baidu.com/#highlight.js'
-        ),
-        'Yandex' => array(
-            //'cdn' => '//yandex.st/highlightjs/' . colorete_get_lib_version(),
-            'cdn' => '//yandex.st/highlightjs/8.2',
-            'desc' => __('Public CDN', 'colorete') . ': Yandex(' . __('lastest version', 'colorete') . ': 8.2)',
-            'css' => '.min',
-            'js' => '.min',
-            'readme' => 'https://tech.yandex.ru/jslibs/#highlight'
-        ),
-        'Qiniu' => array(
-            'cdn' => 'http://cdn.staticfile.org/highlight.js/9.0.0',// . colorete_get_lib_version(),
-            'desc' => __('Public CDN', 'colorete') . ': ' . __('Qiniu', 'colorete') . '(' . __('http only', 'colorete') . ', ' . __('lastest version', 'colorete') . ': 9.0.0)',
-            'css' => '.min',
-            'js' => '.min',
-            'readme' => 'http://www.staticfile.org'
-        ),
-        'Qihoo360' => array(
-            'cdn' => 'http://libs.useso.com/js/highlight.js/8.0',// . colorete_get_lib_version(),
-            'desc' => __('Public CDN', 'colorete') . ': ' . __('Qihoo 360', 'colorete') . '(' . __('http only', 'colorete') . ', ' . __('lastest version', 'colorete') . ': 8.0)',
-            'css' => '.min',
-            'js' => '.min',
-            'readme' => 'http://libs.useso.com/js.php?path=highlight.js'
         )
    );
+}
+
+function colorete_get_hljs_langs() {
+    return array(
+        'common' => array(
+            'apache'          => 'Apache',
+            'bash'            => 'Bash',
+            'cs'              => 'C#',
+            'cpp'             => 'C++',
+            'css'             => 'CSS',
+            'coffeescript'    => 'CoffeeScript',
+            'dts'             => 'Device Tree',
+            'diff'            => 'Diff',
+            'xml'             => 'HTML, XML',
+            'http'            => 'HTTP',
+            'ini'             => 'Ini',
+            'json'            => 'JSON',
+            'java'            => 'Java',
+            'javascript'      => 'JavaScript',
+            'makefile'        => 'Makefile',
+            'markdown'        => 'Markdown',
+            'nginx'           => 'Nginx',
+            'objectivec'      => 'Objective-C',
+            'php'             => 'PHP',
+            'perl'            => 'Perl',
+            'python'          => 'Python',
+            'ruby'            => 'Ruby',
+            'sql'             => 'SQL',
+        ),
+        'extended' => array(
+            '1c'            => '1C',
+            'armasm'        => 'ARM Assembly',
+            'avrasm'        => 'AVR Assembler',
+            'accesslog'     => 'Access log',
+            'actionscript'  => 'ActionScript',
+            'applescript'   => 'AppleScript',
+            'arduino'       => 'Arduino',
+            'asciidoc'      => 'AsciiDoc',
+            'aspectj'       => 'AspectJ',
+            'autohotkey'    => 'AutoHotkey',
+            'autoit'        => 'AutoIt',
+            'axapta'        => 'Axapta',
+            'basic'         => 'Basic',
+            'brainfuck'     => 'Brainfuck',
+            'cal'           => 'C/AL',
+            'cmake'         => 'CMake',
+            'csp'           => 'CSP',
+            'cos'           => 'Caché Object Script',
+            'capnproto'     => 'Cap’n Proto',
+            'ceylon'        => 'Ceylon',
+            'clojure'       => 'Clojure',
+            'clojure-repl'  => 'Clojure REPL',
+            'crystal'       => 'Crystal',
+            'd'             => 'D',
+            'dns'           => 'DNS Zone file',
+            'dos'           => 'DOS .bat',
+            'dart'          => 'Dart',
+            'delphi'        => 'Delphi',
+            'django'        => 'Django',
+            'dockerfile'    => 'Dockerfile',
+            'dust'          => 'Dust',
+            'erb'           => 'ERB (Embedded Ruby)',
+            'elixir'        => 'Elixir',
+            'elm'           => 'Elm',
+            'erlang'        => 'Erlang',
+            'erlang-repl'   => 'Erlang REPL',
+            'fsharp'        => 'F#',
+            'fix'           => 'FIX',
+            'fortran'       => 'Fortran',
+            'gcode'         => 'G-code (ISO 6983)',
+            'gams'          => 'GAMS',
+            'gauss'         => 'GAUSS',
+            'glsl'          => 'GLSL',
+            'gherkin'       => 'Gherkin',
+            'go'            => 'Go',
+            'golo'          => 'Golo',
+            'gradle'        => 'Gradle',
+            'groovy'        => 'Groovy',
+            'hsp'           => 'HSP',
+            'htmlbars'      => 'HTMLBars',
+            'haml'          => 'Haml',
+            'handlebars'    => 'Handlebars',
+            'haskell'       => 'Haskell',
+            'haxe'          => 'Haxe',
+            'irpf90'        => 'IRPF90',
+            'inform7'       => 'Inform 7',
+            'x86asm'        => 'Intel x86 Assembly',
+            'julia'         => 'Julia',
+            'kotlin'        => 'Kotlin',
+            'lasso'         => 'Lasso',
+            'less'          => 'Less',
+            'lisp'          => 'Lisp',
+            'livecodeserver'=> 'LiveCode',
+            'livescript'    => 'LiveScript',
+            'lua'           => 'Lua',
+            'mel'           => 'MEL',
+            'mipsasm'       => 'MIPS Assembly',
+            'mathematica'   => 'Mathematica',
+            'matlab'        => 'Matlab',
+            'maxima'        => 'Maxima',
+            'mercury'       => 'Mercury',
+            'mizar'         => 'Mizar',
+            'mojolicious'   => 'Mojolicious',
+            'monkey'        => 'Monkey',
+            'moonscript'    => 'MoonScript',
+            'nsis'          => 'NSIS',
+            'nimrod'        => 'Nimrod',
+            'nix'           => 'Nix',
+            'ocaml'         => 'OCaml',
+            'openscad'      => 'OpenSCAD',
+            'ruleslanguage' => 'Oracle Rules Language',
+            'oxygene'       => 'Oxygene',
+            'parser3'       => 'Parser3',
+            'powershell'    => 'PowerShell',
+            'processing'    => 'Processing',
+            'prolog'        => 'Prolog',
+            'protobuf'      => 'Protocol Buffers',
+            'puppet'        => ' Puppet',
+            'profile'       => 'Python profile',
+            'q'             => 'Q',
+            'qml'           => 'QML',
+            'r'             => 'R',
+            'rib'           => 'RenderMan RIB',
+            'rsl'           => 'RenderMan RSL',
+            'roboconf'      => 'Roboconf',
+            'rust'          => 'Rust',
+            'scss'          => 'SCSS',
+            'sml'           => 'SML',
+            'sqf'           => 'SQF',
+            'step21'        => 'STEP Part 21',
+            'scala'         => 'Scala',
+            'scheme'        => 'Scheme',
+            'scilab'        => 'Scilab',
+            'smali'         => 'Smali',
+            'smalltalk'     => 'Smalltalk',
+            'stan'          => 'Stan',
+            'stata'         => 'Stata',
+            'stylus'        => 'Stylus',
+            'swift'         => 'Swift',
+            'tp'            => 'TP',
+            'taggerscript'  => 'Tagger Script',
+            'tcl'           => 'Tcl',
+            'tex'           => 'TeX',
+            'thrift'        => 'Thrift',
+            'twig'          => 'Twig',
+            'typescript'    => 'TypeScript',
+            'vbnet'         => 'VB.NET',
+            'vbscript'      => 'VBScript',
+            'vbscript-html' => 'VBScript in HTML',
+            'vhdl'          => 'VHDL',
+            'vala'          => 'Vala',
+            'verilog'       => 'Verilog',
+            'vim'           => 'Vim Script',
+            'xl'            => 'XL',
+            'xquery'        => 'XQuery',
+            'yaml'          => 'YAML',
+            'zephir'        => 'Zephir',
+            'crmsh'         => 'crmsh',
+            'pf'            => 'pf',
+        )
+    );
 }
 
 /**
@@ -211,7 +333,6 @@ function colorete_include() {
         }
 
         wp_enqueue_script( 'colorete', PLUGIN_URL . '/highlight.' . $colorete_package .'.pack.js', $dep_libs, colorete_get_version(), true );
-        wp_enqueue_script( 'colorete_he', PLUGIN_URL . '/he.js', $dep_libs, colorete_get_version(), true );
         wp_enqueue_style( 'coloretetheme', PLUGIN_URL . '/styles/' . $colorete_code_option['theme'] . '.css', array(), colorete_get_version() );
     } else {
         wp_enqueue_script( 'colorete', $colorete_cdn_info['cdn'] . '/highlight' . $colorete_cdn_info['js'] . '.js', array('jquery'), colorete_get_version(), true );
@@ -224,7 +345,6 @@ function colorete_include() {
                  wp_enqueue_script( 'colorete_lang_' . $lang, $colorete_cdn_info['cdn'] . '/languages/' . $lang . $colorete_cdn_info['js'] . '.js', array('colorete'), colorete_get_version(), true );
             }
         }
-
     }
 }
 add_action('wp_head', 'colorete_include');
@@ -233,15 +353,33 @@ add_action('wp_head', 'colorete_include');
  * Attach init code to the current page
  */
 function colorete_append_init_codes() {
-  $js = <<<JS
-  <script type="text/javascript">
-    jQuery(document).ready(function($) {
-      $.each($.merge($('pre'), $('pre code')), function (index, elem) {
-        $(elem).attr('style', '');
-        $(elem).attr('class', '');
-        hljs.highlightBlock(elem);
-      });
-    });
+    $js = <<<JS
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $.each($.merge($('pre'), $('pre code')), function (index, elem) {
+                console.log(elem);
+                // Remove any inline style
+                $(elem).removeAttr('style');
+                var htmlClass = $(elem).attr('class');
+                if (htmlClass !== undefined) {
+                    console.log(htmlClass);
+                    var pattern = /(lang|brush|crayon)\s*:\s*(\w+-?)+/i;
+                    var matches = pattern.exec(htmlClass);
+                    if (null !== matches) {
+                        console.log(matches);
+                        htmlClass = "false" == matches[2].toLowerCase() ? "nohighlight" : matches[2];
+                        console.log(htmlClass);
+                        $(elem).attr('class', htmlClass);
+                    } else {
+                        $(elem).attr('class', 'bash');
+                    }
+                } else {
+                    $(elem).attr('class', 'bash');
+                }
+
+                hljs.highlightBlock(elem);
+            });
+        });
   </script>
 JS;
 
@@ -455,6 +593,7 @@ function colorete_settings_page() {
                 if (('.js' == $suffix || '_js' == $suffix )&& intval($val) == 1) {
                     $language_name =  substr($key, 0, strlen($key) - 3);
                     $file_name = $language_name . '.min.js';
+                    $file_name = $language_name . '.min.js';
                     $full_path = $plugin_root_dir . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . $file_name;
                     if (file_exists($full_path)) {
                         array_push($upload_options['custom_lang'], $language_name);
@@ -521,23 +660,22 @@ function colorete_settings_page() {
              <?php colorete_get_package_list(colorete_get_option('package')); ?>
           </select>
           <div>
-
-              <?php $config = parse_ini_file( plugin_dir_path( __FILE__ ) . 'langs.ini', true ) ?>
+              <?php $langs = colorete_get_hljs_langs() ?>
 
               <h3>Support List:</h3> <a href="javascript:void();" id="colorete_support_list_btn"><?php echo __('[Show/Hide]', 'colorete'); ?></a>
               <div class="language_support_list" id="language_support_list">
                 <p><b>Common</b></p>
-                <?php if (!empty($config['langs']['common'])): ?>
+                <?php if (!empty($langs['common'])): ?>
                     <ul id="language_support_list_common">
-                        <?php foreach ($config['langs']['common'] as $lang => $langName): ?>
+                        <?php foreach ($langs['common'] as $lang => $langName): ?>
                             <li><label><input name="<?php echo $lang ?>.js" checked type="checkbox" value="0" class="colorete_lang common"> <?php echo $langName ?></label>
                         <?php endforeach ?>
                     </ul>
                 <?php endif ?>
                 <p><b>Other</b></p>
-                <?php if (!empty($config['langs']['extended'])): ?>
+                <?php if (!empty($langs['extended'])): ?>
                     <ul id="language_support_list_other">
-                        <?php foreach ($config['langs']['extended'] as $lang => $langName): ?>
+                        <?php foreach ($langs['extended'] as $lang => $langName): ?>
                             <li><label><input name="<?php echo $lang ?>.js" type="checkbox" value="1" class="colorete_lang"> <?php echo $langName ?></label>
                         <?php endforeach ?>
                     </ul>
