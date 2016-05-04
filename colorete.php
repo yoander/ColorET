@@ -356,25 +356,35 @@ function colorete_append_init_codes() {
     $js = <<<JS
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            $.each($.merge($('pre'), $('pre code')), function (index, elem) {
-                console.log(elem);
+            $('pre').each(function (index, elem) {
+                var code = elem;
+                
                 // Remove any inline style
-                $(elem).removeAttr('style');
-                var htmlClass = $(elem).attr('class');
+                $(code).removeAttr('style');
+                
+                var chd = $(elem).children('code'); 
+                if (chd.length > 0) {
+                    code = chd;
+                    // Remove any inline style
+                     $(code).removeAttr('style');
+                }
+                
+                var htmlClass = $(code).attr('class');
                 if (htmlClass !== undefined) {
-                    console.log(htmlClass);
+                    console.log('html class:' + htmlClass);
                     var pattern = /(lang|brush|crayon)\s*:\s*(\w+-?)+/i;
                     var matches = pattern.exec(htmlClass);
                     if (null !== matches) {
-                        console.log(matches);
+                        console.log('Macthes' + matches);
                         htmlClass = "false" == matches[2].toLowerCase() ? "nohighlight" : matches[2];
-                        console.log(htmlClass);
-                        $(elem).attr('class', htmlClass);
-                    } else {
-                        $(elem).attr('class', 'bash');
+                        $(code).attr('class', htmlClass);
+                    } else if (htmlClass.match(/(\w+-?)+\s*:\s*(\w+-?)+/i)) {
+                        console.log('Crayon or hls pattern');
+                        $(code).attr('class', 'bash');
                     }
                 } else {
-                    $(elem).attr('class', 'bash');
+                    console.log('No class found for element ...' , $(code));
+                    $(code).attr('class', 'bash');
                 }
 
                 hljs.highlightBlock(elem);
@@ -390,7 +400,7 @@ JS;
 add_action('wp_print_footer_scripts', 'colorete_append_init_codes');
 
 function htmlenc_func($attr, $content) {
-  return '<pre><code>' . trim(htmlspecialchars(str_replace('<br />', '', do_shortcode($content) ))) . '</code></pre>';
+    return trim(htmlspecialchars(str_replace('<br />', '', do_shortcode($content) )));
 }
 
 add_shortcode( 'htmlenc', 'htmlenc_func' );
