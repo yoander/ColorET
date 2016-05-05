@@ -358,32 +358,33 @@ function colorete_append_init_codes() {
         jQuery(document).ready(function($) {
             $('pre').each(function (index, elem) {
                 var code = elem;
-                
+
                 // Remove any inline style
                 $(code).removeAttr('style');
-                
-                var chd = $(elem).children('code'); 
+
+                var chd = $(elem).children('code');
                 if (chd.length > 0) {
                     code = chd;
                     // Remove any inline style
                      $(code).removeAttr('style');
                 }
-                
+
                 var htmlClass = $(code).attr('class');
                 if (htmlClass !== undefined) {
-                    console.log('html class:' + htmlClass);
+                    // Detect if language definition is compatible with Crayon
+                    // Or SyntaxHighligther
                     var pattern = /(lang|brush|crayon)\s*:\s*(\w+-?)+/i;
                     var matches = pattern.exec(htmlClass);
                     if (null !== matches) {
-                        console.log('Macthes' + matches);
                         htmlClass = "false" == matches[2].toLowerCase() ? "nohighlight" : matches[2];
                         $(code).attr('class', htmlClass);
+                    // Find if class attribute is compatible with Crayon or
+                    // SyntaxHighligther definition
                     } else if (htmlClass.match(/(\w+-?)+\s*:\s*(\w+-?)+/i)) {
-                        console.log('Crayon or hls pattern');
                         $(code).attr('class', 'bash');
                     }
                 } else {
-                    console.log('No class found for element ...' , $(code));
+                    // No language detected then set
                     $(code).attr('class', 'bash');
                 }
 
