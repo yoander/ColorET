@@ -381,10 +381,13 @@ function colorete_append_init_codes() {
                     // Find if class attribute is compatible with Crayon or
                     // SyntaxHighligther definition
                     } else if (htmlClass.match(/(\w+-?)+\s*:\s*(\w+-?)+/i)) {
+                        // Set default language to bash to avoid erroneus
+                        // language detection for single line
                         $(code).attr('class', 'bash');
                     }
                 } else {
-                    // No language detected then set
+                    // Set default language to bash to avoid erroneus
+                    // language detection for single line
                     $(code).attr('class', 'bash');
                 }
 
@@ -396,8 +399,6 @@ JS;
 
   echo $js;
 }
-
-
 add_action('wp_print_footer_scripts', 'colorete_append_init_codes');
 
 function htmlenc_func($attr, $content) {
@@ -490,36 +491,6 @@ function colorete_add_settings_link($links, $file) {
     return $links;
 }
 add_filter('plugin_action_links', 'colorete_add_settings_link', 10, 2);
-
-
-/**
- * Add BB-Tag for highlighting.
- *
- *   Usage: [CODE lang=cpp bbcode=enable]...[/CODE]
- */
-function colorete_code_handler($attrs, $content) {
-    $language = '';
-    if (!empty($attrs['lang']))
-        $language = "class=\"${attrs['lang']}\"";
-
-    $enable_inner_bbcode = false;
-    if(isset($attrs['bbcode'])) {
-        $enable_inner_bbcode = true;
-        if('disable' === $attrs['bbcode'] || 0 === $attrs['bbcode']) {
-            $enable_inner_bbcode = false;
-        }
-    }
-
-    if($enable_inner_bbcode) {
-        return "<pre class=\"colorete\"><code $language>" . do_shortcode(ltrim(htmlentities($content), '\n')) . '</code></pre>';
-    } else {
-        return "<pre class=\"colorete\"><code $language>" . ltrim(str_replace('&lt;br /&gt;', '', htmlspecialchars($content)), '\n') . '</code></pre>';
-    }
-}
-
-if (colorete_get_option('shortcode')) {
-    add_shortcode('code', 'colorete_code_handler');
-}
 
 function colorete_generate_custom_pack() {
     // generate custom language pack
