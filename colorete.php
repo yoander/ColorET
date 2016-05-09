@@ -236,13 +236,13 @@ function colorete_install() {
         'location' => 'local',
         'package' => 'common',
         'theme' => 'default',
-        'colorete_option' => array(
+        'colorete_hljs_option' => array(
             'tabReplace' => '    ',
             'classPrefix' => '',
             'useBR' => false,
             'languages' => ''
         ),
-        'additional_css' => "pre.colorete {padding: 5px;}\npre.colorete code {}",
+        'additional_css' => "pre.hljs { padding: 5px; }\npre.hljs code {}",
         'custom_lang' => array()
     ));
 }
@@ -285,7 +285,7 @@ function colorete_set_option($item, $val) {
  * Get option of highlight.js
  */
 function colorete_get_lib_option($item) {
-    $res = colorete_get_option('colorete_option');
+    $res = colorete_get_option('colorete_hljs_option');
     if (empty($res) || !isset($res[$item]))
         return '';
     return $res[$item];
@@ -353,8 +353,22 @@ add_action('wp_head', 'colorete_include');
  * Attach init code to the current page
  */
 function colorete_append_init_codes() {
+    $hljs_code_option = get_option('colorete_code_option');
+    // inject init script
+    $options = json_encode(
+        array_filter($hljs_code_option['colorete_hljs_option'],
+            function ( $option_value ) {
+                return !empty($option_value);
+            }
+        )
+    );
+
+    //dump($options);
+    //return;
     $js = <<<JS
+    <style type="text/css">${hljs_code_option['additional_css']}</style>
     <script type="text/javascript">
+        hljs.configure($options);
         jQuery(document).ready(function($) {
             $('pre').each(function (index, elem) {
                 var code = elem;
@@ -379,7 +393,7 @@ function colorete_append_init_codes() {
                         htmlClass = "false" == matches[2].toLowerCase() ? "nohighlight" : matches[2];
                         $(code).attr('class', htmlClass);
                     // Find if class attribute is compatible with Crayon or
-                    // SyntaxHighligther definition
+                    // SyntaxHighligther definition, ex: "toolbar:false nums:false"
                     } else if (htmlClass.match(/(\w+-?)+\s*:\s*(\w+-?)+/i)) {
                         // Set default language to bash to avoid erroneus
                         // language detection for single line
@@ -402,7 +416,7 @@ JS;
 add_action('wp_print_footer_scripts', 'colorete_append_init_codes');
 
 function htmlenc_func($attr, $content) {
-    return trim(htmlspecialchars(str_replace('<br />', '', do_shortcode($content) )));
+    return trim( htmlspecialchars( str_replace( '<br />', '', do_shortcode( $content ) )));
 }
 
 add_shortcode( 'htmlenc', 'htmlenc_func' );
@@ -555,11 +569,11 @@ function colorete_settings_page() {
             'location' => $_POST['colorete_location'],
             'package' => $_POST['colorete_package'],
             'theme' => $_POST['colorete_theme'],
-            'colorete_option' => array(
-                'tabReplace' => $_POST['colorete_option_tab_replace'],
-                'classPrefix' => $_POST['colorete_option_class_prefix'],
-                'useBR' => (isset($_POST['colorete_option_use_br']) && $_POST['colorete_option_use_br'])? true: false,
-                'languages' => $_POST['colorete_option_languages']
+            'colorete_hljs_option' => array(
+                'tabReplace' => $_POST['colorete_hljs_option_tab_replace'],
+                'classPrefix' => $_POST['colorete_hljs_option_class_prefix'],
+                'useBR' => (isset($_POST['colorete_hljs_option_use_br']) && $_POST['colorete_hljs_option_use_br'])? true: false,
+                'languages' => $_POST['colorete_hljs_option_languages']
             ),
             'additional_css' => $_POST['colorete_additional_css'],
             'custom_lang' => colorete_get_option('custom_lang')
@@ -574,7 +588,6 @@ function colorete_settings_page() {
                 $suffix = substr($key, -3);
                 if (('.js' == $suffix || '_js' == $suffix )&& intval($val) == 1) {
                     $language_name =  substr($key, 0, strlen($key) - 3);
-                    $file_name = $language_name . '.min.js';
                     $file_name = $language_name . '.min.js';
                     $full_path = $plugin_root_dir . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . $file_name;
                     if (file_exists($full_path)) {
@@ -667,7 +680,6 @@ function colorete_settings_page() {
             </div>
         </div>
         <script type="text/javascript">
-        console.log(hljs.listLanguages());
         (function($, window){
             $(document).ready(function(){
                 $("#language_support_list ul").css({
@@ -771,17 +783,17 @@ function colorete_settings_page() {
 
         <!-- text edit : tab replace -->
         <p class="section">
-          <label for="colorete_option_tab_replace"><?php echo __('Highlight.js Option - Tab replace:', 'colorete'); ?></label><br/>
-          <input type="text" name="colorete_option_tab_replace" id="colorete_option_tab_replace" value="<?php echo colorete_get_lib_option('tabReplace'); ?>" /><br />
+          <label for="colorete_hljs_option_tab_replace"><?php echo __('Highlight.js Option - Tab replace:', 'colorete'); ?></label><br/>
+          <input type="text" name="colorete_hljs_option_tab_replace" id="colorete_hljs_option_tab_replace" value="<?php echo colorete_get_lib_option('tabReplace'); ?>" /><br />
 
-          <label for="colorete_option_class_prefix"><?php echo __('Highlight.js Option - Class prefix:', 'colorete') ?></label><br/>
-          <input type="text" name="colorete_option_class_prefix" id="colorete_option_class_prefix" value="<?php echo colorete_get_lib_option('classPrefix'); ?>" /><br />
+          <label for="colorete_hljs_option_class_prefix"><?php echo __('Highlight.js Option - Class prefix:', 'colorete') ?></label><br/>
+          <input type="text" name="colorete_hljs_option_class_prefix" id="colorete_hljs_option_class_prefix" value="<?php echo colorete_get_lib_option('classPrefix'); ?>" /><br />
 
-          <label for="colorete_option_use_br"><?php echo __('Highlight.js Option - Use BR:', 'colorete') ?></label>
-          <input type="checkbox" name="colorete_option_use_br" id="colorete_option_use_br" value="1" <?php if(colorete_get_lib_option('useBR')) echo ' checked="checked"'; ?> /><br />
+          <label for="colorete_hljs_option_use_br"><?php echo __('Highlight.js Option - Use BR:', 'colorete') ?></label>
+          <input type="checkbox" name="colorete_hljs_option_use_br" id="colorete_hljs_option_use_br" value="1" <?php if(colorete_get_lib_option('useBR')) echo ' checked="checked"'; ?> /><br />
 
-          <label for="colorete_option_languages"><?php echo __('Highlight.js Option - Languages:', 'colorete'); ?></label><br/>
-          <textarea type="text" name="colorete_option_languages" id="colorete_option_languages" value="<?php echo colorete_get_lib_option('languages'); ?>"><?php echo colorete_get_lib_option('languages'); ?></textarea><br />
+          <label for="colorete_hljs_option_languages"><?php echo __('Highlight.js Option - Languages:', 'colorete'); ?></label><br/>
+          <textarea type="text" name="colorete_hljs_option_languages" id="colorete_hljs_option_languages" value="<?php echo colorete_get_lib_option('languages'); ?>"><?php echo colorete_get_lib_option('languages'); ?></textarea><br />
        </p>
 
         <!-- text edit : additional css -->
