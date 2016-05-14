@@ -2,7 +2,7 @@
 /*
 Plugin Name:       Colorete
 Plugin URI:        https://github.com/yoander/colorete
-Description:       Colorete highlights syntax in code for any post or page it's based on  a href="https://github.com/owt5008137/WP-Code-Highlight.js">WP-Code-Highlight.js v0.5.11</a>
+Description:       Colorete highlights syntax in code for any post or page it's based on  <a href="https://github.com/owt5008137/WP-Code-Highlight.js">WP-Code-Highlight.js v0.5.11</a> and it is compatible with <a href="https://github.com/aramk/crayon-syntax-highlighter">Crayon Syntax Highlighter</a> out of the box.
 Version:           0.1.0
 Author:            Yoander Valdés Rodríguez (libreman)
 Author URI:        http://www.librebyte.net/
@@ -777,47 +777,29 @@ function colorete_settings_page() {
             <table border="0" class="colorete_copyright">
                 <tr>
                     <td width="120px" align="center"><?php echo __('Author', 'colorete'); ?></td>
-                    <td><p><a href="http://owent.net"><?php echo __('OWenT', 'colorete'); ?></a> &lt;<a href="mailto:owent@owent.net">owent@owent.net</a>&gt;</p></td>
+                    <td><p><a href="http://www.librebyte.net">Yoander Valdés Rodríguez</a> &lt;<a href="http://github.com/yoander">libreman</a>&gt;</p></td>
                 </tr>
 
                 <tr>
                     <td width="120px" align="center"><?php echo __('Plugin Info', 'colorete'); ?></td>
-                    <td><?php echo __('<p>This is a wordpress plugin for <a href="http://highlightjs.org/">highlight.js</a> library.
-                        <a href="http://highlightjs.org/">Highlight.js</a> highlights syntax in code examples on web pages.
-                        It&acute;s very easy to use because it works automatically: finds blocks of code, detects a language, highlights it.</p>
-                        <p>And it&acute;s very easy to work with <a href="https://stackedit.io/" target="_blank">stackedit</a> or other markdown editors</p>
-                        ', 'colorete'); ?></td>
+                    <td><p><?php echo __('Colorete highlights syntax in code for any post or page it\'s based on <a href="https://github.com/owt5008137/WP-Code-Highlight.js">WP-Code-Highlight.js v0.5.11</a> and it is compatible with <a href="https://github.com/aramk/crayon-syntax-highlighter">Crayon Syntax Highlighter</a> out of the box.', 'colorete') ?></p></td>
                 </tr>
 
                 <tr>
                     <td width="120px" align="center"><?php echo __('Plugin Usage', 'colorete'); ?></td>
                     <td><?php echo __('<p>For code highlighting you should use one of the following ways.</p>
-                            <p><strong>The first way</strong> is to use bb-codes:</p>
-                            <p><pre><code>[code] this language will be automatically determined [/code]</code></pre></p>
-                        <p><pre><code>[code lang="cpp"] highlight the code with certain language [/code]</code></pre></p>
-                            <p><strong>The second way</strong> is to use html-tags:</p>
-                            <p><pre><code class="html">&lt;pre&gt;&lt;code&gt; this language will be automatically determined &lt;/code&gt;&lt;/pre&gt;</code></pre></p>
-                            <p><pre><code class="html">&lt;pre&gt;&lt;code bbcode=enable&gt; this language will be [b]automatically determined[\b] and inner bbcode is available &lt;/code&gt;&lt;/pre&gt;</code></pre></p>
-                        <p><pre><code class="html">&lt;pre&gt;&lt;code class="html"&gt; highlight the code with certain language &lt;/code&gt;&lt;/pre&gt;</code></pre></p>', 'colorete'); ?></td>
-                </tr>
-                <tr>
-                    <td width="120px" align="center"><?php echo __('Donate', 'colorete'); ?></td>
-                    <td><?php echo __('If you interested my work, welcome to visit <a href="https://github.com/owt5008137/WP-Code-Highlight.js/#donate" target="_blank">https://github.com/owt5008137/WP-Code-Highlight.js/#donate</a> to donate me for a cup of coffee.', 'colorete'); ?></td>
+                            <p>&lt;pre&gt;&lt;code&gt; this language will be automatically determined if default language is not set &lt;/code&gt;&lt;/pre&gt;</p>
+                        <p>&lt;pre&gt;&lt;code class="html"&gt; highlight the code with certain as hmtl language &lt;/code&gt;&lt;/pre&gt;</p>
+                        <p>
+                        &lt;pre&gt;&lt;code class="html"&gt;
+                        [htmlenc] First convert special chars to their equivalent html entity (Very useful y you dont\' use Wordpress Visual Editor) [/htmlenc]
+                        &lt;/code&gt;&lt;/pre&gt;</p>', 'colorete'); ?></td>
                 </tr>
                 <tr>
                     <td width="120px" align="center"><?php echo __('Thanks To', 'colorete'); ?></td>
                     <td><ul>
+                            <li><a href="http://owent.net"><?php echo __('OWenT', 'colorete'); ?></a> &lt;<a href="mailto:owent@owent.net">owent@owent.net</a>&gt; (for the original work)</li>
                             <li><a href="http://softwaremaniacs.org/">Ivan Sagalaev</a> (for his <a href="http://highlightjs.org/">highlight.js</a>)</li>
-                            <li><a href="http://kalnitsky.org">Igor Kalnitsky</a> (for his <a href="https://wordpress.org/plugins/wp-highlightjs/">wp-highlight.js</a> plugin)</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td width="120px" align="center"><?php echo __('Thanks To', 'colorete'); ?></td>
-                    <td><h3><?php echo __('Contributor List', 'colorete'); ?>:</h3><br /><ul>
-                            <li><a href="http://geraint.co">Geraint Palmer</a></li>
-                            <li><a href="http://www.codingserf.com">David</a></li>
-                            <li><a href="http://www.shiyaluo.com">shiya</a></li>
-                            <li><a href="https://github.com/Beej126">Beej126</a></li>
                     </ul></td>
                 </tr>
            </table>
