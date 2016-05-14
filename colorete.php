@@ -337,20 +337,13 @@ add_action('wp_head', 'colorete_include');
  * Attach init code to the current page
  */
 function colorete_append_init_codes() {
-    $colorete_code_option = get_option('hljs_default_lang');
-    // inject init script
-    /*$options = json_encode(
-        array_filter($colorete_code_option['colorete_hljs_option'],
-            function ( $option_value ) {
-                return !empty($option_value);
-            }
-        )
-    );*/
+    $colorete_options = get_option('colorete_code_option');
 
     $js = <<<JS
-    <style type="text/css">${colorete_code_option['additional_css']}</style>
+    <style type="text/css">${colorete_options['additional_css']}</style>
     <script type="text/javascript">
-        //hljs.configure($options);
+        var defaultLang = "${colorete_options['hljs_default_lang']}";
+
         jQuery(document).ready(function($) {
             $('pre').each(function (index, elem) {
                 var code = elem;
@@ -365,26 +358,35 @@ function colorete_append_init_codes() {
                      $(code).removeAttr('style');
                 }
 
-                var htmlClass = $(code).attr('class');
-                if (htmlClass !== undefined) {
-                    // Detect if language definition is compatible with Crayon
-                    // Or SyntaxHighligther
-                    var pattern = /(lang|brush|crayon)\s*:\s*(\w+-?)+/i;
-                    var matches = pattern.exec(htmlClass);
-                    if (null !== matches) {
-                        htmlClass = "false" == matches[2].toLowerCase() ? "nohighlight" : matches[2];
-                        $(code).attr('class', htmlClass);
-                    // Find if class attribute is compatible with Crayon or
-                    // SyntaxHighligther definition, ex: "toolbar:false nums:false"
-                    } else if (htmlClass.match(/(\w+-?)+\s*:\s*(\w+-?)+/i)) {
+                var langAttr = $(code).attr('lang');
+                if (langAttr !== undefined) {
+                    $(code).attr('class', langAttr);
+                    $(code).removeAttr('lang');
+                } else {
+                    var htmlClass = $(code).attr('class');
+
+                    if (htmlClass !== undefined) {
+                        // Detect if language definition is compatible with Crayon
+                        // Or SyntaxHighligther
+                        var pattern = /(lang|brush|crayon)\s*:\s*(\w+-?)+/i;
+                        var matches = pattern.exec(htmlClass);
+                        if (null !== matches) {
+                            htmlClass = "false" == matches[2].toLowerCase() ? "nohighlight" : matches[2];
+                            $(code).attr('class', htmlClass);
+                        } else if ('' != $(code).attr('lang')) {
+
+                        // Find if class attribute is compatible with Crayon or
+                        // SyntaxHighligther definition, ex: "toolbar:false nums:false"
+                        } else if (htmlClass.match(/(\w+-?)+\s*:\s*(\w+-?)+/i)) {
+                            // Set default language to bash to avoid erroneus
+                            // language detection for single line
+                            $(code).attr('class', defaultLang);
+                        }
+                    } else {
                         // Set default language to bash to avoid erroneus
                         // language detection for single line
-                        $(code).attr('class', 'bash');
+                        $(code).attr('class', defaultLang);
                     }
-                } else {
-                    // Set default language to bash to avoid erroneus
-                    // language detection for single line
-                    $(code).attr('class', 'bash');
                 }
 
                 hljs.highlightBlock(elem);
